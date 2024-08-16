@@ -1,0 +1,110 @@
+{
+    "database": {
+        "path": "../../data/raw/retail_data.db",
+        "backup_path": "retail_data_backup.db"
+    },
+    "spark": {
+        "app_name": "Retail Data to SQLite",
+        "jdbc_driver_path": "../../jars/sqlite-jdbc-3.46.0.1.jar"
+    },
+    "ml_model": {
+        "n_estimators": 100,
+        "max_depth": 5,
+        "test_size": 0.2,
+        "random_state": 42
+    },
+    "data_generation": {
+        "num_products": 200,
+        "num_stores": 50,
+        "num_customers": 5000,
+        "num_years": 5,
+        "start_year": 2019
+    },
+    "feedback": {
+        "chance": 0.3,
+        "texts": {
+            "Great product!": 5.0,
+            "Very satisfied with the quality.": 4.5,
+            "Not as expected.": 2.0,
+            "Would not buy again.": 1.5,
+            "Excellent value for money.": 4.0,
+            "Good for the price.": 3.5,
+            "Average product.": 3.0,
+            "Met my expectations.": 3.5,
+            "Highly recommend!": 5.0,
+            "Could be better.": 2.5
+        }
+    },
+    "table_schemas": {
+        "Product": [
+            "Product_ID TEXT PRIMARY KEY",
+            "Product_Name TEXT",
+            "Brand_Name TEXT",
+            "Category TEXT",
+            "Subcategory TEXT",
+            "Price REAL",
+            "Cost REAL",
+            "Supplier_ID TEXT"
+        ],
+        "Store": [
+            "Store_ID TEXT PRIMARY KEY",
+            "Store_Location TEXT",
+            "Store_Size REAL",
+            "Store_Type TEXT"
+        ],
+        "Customer": [
+            "Customer_ID TEXT PRIMARY KEY",
+            "First_Name TEXT",
+            "Last_Name TEXT",
+            "Email TEXT",
+            "Phone TEXT",
+            "Address TEXT",
+            "City TEXT",
+            "State TEXT",
+            "Zip_Code TEXT",
+            "Customer_Join_Date TEXT",
+            "Total_Spent REAL"
+        ],
+        "Time": [
+            "Date TEXT PRIMARY KEY",
+            "Day_of_Week TEXT",
+            "Week_of_Year INTEGER",
+            "Month TEXT",
+            "Quarter TEXT",
+            "Year INTEGER"
+        ],
+        "Sales": [
+            "Transaction_ID TEXT PRIMARY KEY",
+            "Product_ID TEXT",
+            "Store_ID TEXT",
+            "Customer_ID TEXT",
+            "Date TEXT",
+            "Quantity_Sold INTEGER",
+            "Sales_Amount REAL",
+            "Year INTEGER",
+            "Month INTEGER"
+        ],
+        "Supplier": [
+            "Supplier_ID TEXT PRIMARY KEY",
+            "Supplier_Name TEXT",
+            "Contact_Number TEXT",
+            "Email TEXT",
+            "Lead_Time_Days INTEGER"
+        ],
+        "Feedback": [
+            "Feedback_ID TEXT PRIMARY KEY",
+            "Product_ID TEXT",
+            "Customer_ID TEXT",
+            "Date TEXT",
+            "Feedback_Text TEXT",
+            "Feedback_Rating REAL"
+        ],
+        "Loyalty": [
+            "Loyalty_ID TEXT PRIMARY KEY",
+            "Customer_ID TEXT",
+            "Points_Earned REAL",
+            "Points_Redeemed REAL",
+            "Membership_Tier TEXT"
+        ]
+    }
+}
