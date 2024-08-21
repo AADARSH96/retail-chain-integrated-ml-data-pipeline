@@ -2,6 +2,8 @@ from pyspark.sql import SparkSession
 import json
 import logging
 import os
+from datetime import datetime
+from src.data.database_operations import get_next_version_number
 
 # Set environment variables for Python version consistency
 os.environ["PYSPARK_PYTHON"] = "/opt/anaconda3/bin/python3"
@@ -64,3 +66,13 @@ def read_dataframe_from_sqlite(spark, table_name, db_path, jdbc_driver):
         .option("dbtable", table_name) \
         .load()
     return df
+
+
+def save_spark_model(model, model_name, db_path):
+    version = get_next_version_number(model_name, db_path)
+    date_path = datetime.now().strftime("%Y%m%d")
+    base_path = f"./results/models/{date_path}"
+    os.makedirs(base_path, exist_ok=True)
+    file_path = f"{base_path}/{model_name}_v{version}"
+    model.save(file_path)
+    return file_path, version

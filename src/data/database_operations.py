@@ -115,7 +115,10 @@ def create_tables(config):
     db_admin.connect()
 
     # Create tables using schemas from the configuration
-    for table_name, columns in config['table_schemas'].items():
+    for table_name, columns in config['data_table_schemas'].items():
+        db_admin.create_table(table_name, columns)
+
+    for table_name, columns in config['model_table_schemas'].items():
         db_admin.create_table(table_name, columns)
 
     # Close the connection
@@ -123,6 +126,13 @@ def create_tables(config):
     print("All tables created successfully.")
 
 
-if __name__ == "__main__":
-    config = load_config()
-    create_tables(config)
+def get_next_version_number(model_name, db_path):
+    print(f"Fetching next version number for model: {model_name}")
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+    cursor.execute("SELECT MAX(Version) FROM model_info WHERE Model_Name = ?", (model_name,))
+    result = cursor.fetchone()
+    next_version = (result[0] if result[0] is not None else 0) + 1
+    conn.close()
+    return next_version
+
